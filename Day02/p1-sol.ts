@@ -10,11 +10,24 @@ function totalSafeReports(input: string) {
   for (let i = 0; i < reports.length; i++) {
     if (isSafe(reports[i])) count++;
   }
-  console.log("number of safe reports", count);
+  console.log("Number of safe ✅ reports ", count);
   return count;
 }
 
 function isSafe(report: number[]) {
+  if (isSequenceSafe(report)) return true;
+
+  // Second part solution with the added condition by removing one level
+  // TODO : Refactor this
+  for (let i = 0; i < report.length; i++) {
+    const modifiedReport = [...report.slice(0, i), ...report.slice(i + 1)];
+    if (isSequenceSafe(modifiedReport)) return true;
+  }
+
+  return false;
+}
+
+function isSequenceSafe(report: number[]) {
   let isIncreasingCount = 0;
   let isDecreasingCount = 0;
   // Is report sequence increasing or decreasing
@@ -27,14 +40,10 @@ function isSafe(report: number[]) {
     }
   }
 
-  if (
+  return (
     isIncreasingCount === report.length - 1 ||
     isDecreasingCount === report.length - 1
-  ) {
-    return true;
-  } else {
-    return false;
-  }
+  );
 }
 
 const file = Bun.file("input.txt");
