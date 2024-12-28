@@ -3,26 +3,36 @@ function sumOfMultiplyFunctions(input: string) {
     const regexDont = /don't\(\)/g
     const regexDo = /do\(\)/g
   
-    let result = 1;
     let match;
-    let matchDont;
     let sum = 0
     let isEnabled = true
+
+    const regex = /(?:mul\((\d+),(\d+)\)|do\(\)|don't\(\))/g;
   
-  
-    while ((match = regexMultiply.exec(input)) !== null) {
-        if(isEnabled){
-            result *= parseInt(match[1]) * parseInt(match[2]);
-            sum += result
-            // result = 1
+    while ((match = regex.exec(input)) !== null) {
+        // console.log('Found:', {
+        //     fullMatch: match[0],
+        //     position: match.index,
+        //     type: match[1] ? 'multiply' : match[0]
+        // });
+
+        if (match[0] === 'do()') {
+            isEnabled = true
+        } 
+        else if (match[0] === "don't()") {
+            isEnabled = false
         }
-        console.log('result', result);
+        else {
+            if(isEnabled)
+                sum += parseInt(match[1]) * parseInt(match[2]);
+        }
     }
     
+    console.log('sum', sum);
     return input;
   }
   
-  const file = Bun.file("test.txt");
+  const file = Bun.file("input.txt");
   const input = await file.text();
   
   sumOfMultiplyFunctions(input);
