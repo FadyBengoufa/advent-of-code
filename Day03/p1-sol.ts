@@ -1,7 +1,5 @@
 function sumOfMultiplyFunctions(input: string) {
   const regexMultiply = /mul\((\d+),(\d+)\)/g;
-  const regexDont = /don't\(\)/g
-  const regexDo = /do\(\)/g
 
   let result = 1;
   let match;
